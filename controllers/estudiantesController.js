@@ -41,8 +41,66 @@ const updateEstudiante = (req, res) => {
     }
 };
 
+//Dar de alta a un estudiante
+const enrollEstudiante = function (req, res) {
+    const estudianteId = parseInt(req.params.id);
+    const cursoId = parseInt(req.body.cursoId);
+
+    let estudiante = modelo.estudiantes.findById(estudianteId);
+    
+    if (!estudiante) {
+        return res.status(404).json({ error: 'Estudiante no encontrado' });
+    }
+
+    let curso = modelo.cursos.findById(cursoId);
+    
+    if (!curso) {
+        return res.status(404).json({ error: 'Curso no encontrado' });
+    }
+
+    if (!estudiante.cursosInscritos.includes(cursoId)) {
+        estudiante.cursosInscritos.push(cursoId);  
+        modelo.estudiantes.update(estudianteId, estudiante); 
+    }
+
+    res.status(200).json({
+        msg: 'Estudiante inscrito exitosamente',
+        cursosInscritos: estudiante.cursosInscritos  
+    });
+};
+
+// Metodo para dar de baja a un estudiante de un curso
+const disenrollEstudiante = function (req, res) {
+    const estudianteId = parseInt(req.params.id);
+    const cursoId = parseInt(req.body.cursoId);
+
+    let estudiante = modelo.estudiantes.findById(estudianteId);
+
+    if (!estudiante) {
+        return res.status(404).json({ error: 'Estudiante no encontrado' });
+    }
+
+    let curso = modelo.cursos.findById(cursoId);
+    
+    if (!curso) {
+        return res.status(404).json({ error: 'Curso no encontrado' });
+    }
+
+    estudiante.cursosInscritos = estudiante.cursosInscritos.filter(id => id !== cursoId);  
+
+    modelo.estudiantes.update(estudianteId, estudiante); 
+
+    res.status(200).json({
+        msg: 'Estudiante desinscrito exitosamente',
+        cursosInscritos: estudiante.cursosInscritos  
+    });
+};
+
 exports.getAllEstudiantes = getAllEstudiantes;
 exports.getEstudiante = getEstudiante;
 exports.createEstudiante = createEstudiante;
 exports.updateEstudiante = updateEstudiante;
 exports.deleteEstudiante = deleteEstudiante;
+
+exports.enrollEstudiante = enrollEstudiante;
+exports.disenrollEstudiante = disenrollEstudiante;

@@ -1,7 +1,7 @@
 let profesores = [
-    { id: '1', nombre: 'Dr. John Smith', departamento: 'Software' },
-    { id: '2', nombre: 'Dra. Lisa Brown', departamento: 'Hardware' },
-    { id: '3', nombre: 'Dr. Miguel Gomez', departamento: 'IoT' }
+    { id: '1', nombre: 'Dr. John Smith', departamento: 'Software', cursosInscritos: [] },
+    { id: '2', nombre: 'Dra. Lisa Brown', departamento: 'Hardware', cursosInscritos: [] },
+    { id: '3', nombre: 'Dr. Miguel Gomez', departamento: 'IoT', cursosInscritos: [] }
 ];
 
 let nextProfesorId = profesores.length + 1;
